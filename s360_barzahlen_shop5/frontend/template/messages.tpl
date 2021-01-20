@@ -1,0 +1,1 @@
+{if $message}<div class="alert alert-{$message.level}">{$message.text}</div>{/if}

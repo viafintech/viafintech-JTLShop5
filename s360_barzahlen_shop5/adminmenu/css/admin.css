@@ -1,0 +1,70 @@
+.actions i {
+    padding: 0 5px 0;
+}
+
+.modal .spaced {
+    width: 120px;
+}
+
+.modal-body {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+thead td {
+    font-weight: bold;
+    border: none !important;
+}
+
+#page-link-current {
+    padding: 2px;
+}
+
+#page-select {
+    border:0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 35px;
+    width: 35px;
+    text-align: center;    
+}
+
+.pagination {
+    margin-top: 50px;
+}
+
+.pagination .page-link {
+    font-weight: 700;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+}
+
+
+
+#s360-search {
+    margin-right: 8px;
+    border-radius: 0.25rem;
+}
+
+#s360-slip-table{
+    margin-top: 20px;
+}
+
+#s360-search-button {
+    border-radius: 0.25rem;
+}
+
+#slip-modal .btn {
+    margin-top: 5px;
+}
+
+.modal-header {
+    padding: 5px 0 15px 0;
+}
+
+.modal-footer {
+    padding: 15px 0 0;
+}
+
+.s360-help .row {
+    padding: 20px 0 10px;
+}

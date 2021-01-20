@@ -1,0 +1,34 @@
+{
+  "name": "s360_barzahlen_shop5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/solution360/plugins/jtl/shop-5/s360_barzahlen_shop5.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/solution360/plugins/jtl/shop-5/s360_barzahlen_shop5/issues"
+  },
+  "homepage": "https://gitlab.com/solution360/plugins/jtl/shop-5/s360_barzahlen_shop5#readme",
+  "devDependencies": {
+    "@types/jquery": "^3.5.0",
+    "grunt": "~1.0.1",
+    "grunt-autoprefixer": "^3.0.4",
+    "grunt-contrib-concat": "~1.0.1",
+    "grunt-contrib-imagemin": "~1.0.1",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "~3.0.1",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-newer": "~1.3.0",
+    "grunt-potomo": "^3.5.0"
+  }
+}

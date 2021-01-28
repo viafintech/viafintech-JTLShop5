@@ -68,10 +68,10 @@ class Barzahlen extends Method
 
         if (Helper::isset_noempty($this->config->sendCustomerAddress)) {
             if ($order->oRechnungsadresse->cStrasse && $order->oRechnungsadresse->cHausnummer) {
-                $address["street_and_no"] = $order->oRechnungsadresse->cStrasse . " " . $order->oRechnungsadresse->cHausnummer;
+                $address["street_and_no"] = html_entity_decode($order->oRechnungsadresse->cStrasse . " " . $order->oRechnungsadresse->cHausnummer, ENT_COMPAT, 'UTF-8');
             }
             $address["zipcode"] = $order->oRechnungsadresse->cPLZ;
-            $address["city"] = $order->oRechnungsadresse->cOrt;
+            $address["city"] = html_entity_decode($order->oRechnungsadresse->cOrt, ENT_COMPAT, 'UTF-8');
             $address["country"] = $order->oRechnungsadresse->cLand;
             $request->setAddress($address);
         }        

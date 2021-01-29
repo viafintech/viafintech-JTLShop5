@@ -10,7 +10,23 @@ use JTL\Plugin\Bootstrapper;
 class Bootstrap extends Bootstrapper {
 
     private $cFrontendPfad;
-    
+
+    public function installed() {
+        parent::installed();
+
+        // Bug Workaround - JTL-Shop 5.0.0 does not clear cache when a plugin gets installed via the extension store
+        Shop::Container()->getCache()->flushTags([CACHING_GROUP_CORE, CACHING_GROUP_LANGUAGE,
+            CACHING_GROUP_LICENSES, CACHING_GROUP_PLUGIN, CACHING_GROUP_BOX]);
+    }
+
+    public function updated($oldVersion, $newVersion) {
+        parent::updated($oldVersion, $newVersion);
+
+        // Bug Workaround - JTL-Shop 5.0.0 does not clear cache when a plugin gets installed via the extension store
+        Shop::Container()->getCache()->flushTags([CACHING_GROUP_CORE, CACHING_GROUP_LANGUAGE,
+            CACHING_GROUP_LICENSES, CACHING_GROUP_PLUGIN, CACHING_GROUP_BOX]);
+    }
+
     public function boot(Dispatcher $dispatcher): void {
 
         $dispatcher->listen('shop.hook.' . \HOOK_SMARTY_OUTPUTFILTER, function (array $args) {

@@ -27,7 +27,7 @@ window.ajaxEndpoint = '{$AdminPluginURL}&isAjax=1';
                         </span>
                     </div>                    
                 </div>
-                <table id="s360-slip-table" class="table table-condensed">
+                <table id="s360-slip-table" class="table table-condensed table-responsive">
                     <thead>
                         <td>{__('Bestell-Nr')}</td>
                         <td>{__('Zahlschein')}</td>

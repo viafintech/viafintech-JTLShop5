@@ -228,7 +228,7 @@
             </Variable>
             <Variable>
                 <Description><![CDATA[Technischer Fehler oder Tageslimit &uuml;berschritten]]></Description>
-                <VariableLocalized iso="GER"><![CDATA[Die Zahlung kann leider nicht ausgef&uuml;hrt werden. Entweder handelt es sich um ein vorrübergehendes technisches Problem oder das Tageslimit w&auml;re &uuml;berschritten. Bitte wählen Sie eine andere Zahlungsart.]]></VariableLocalized>
+                <VariableLocalized iso="GER"><![CDATA[Die Zahlung kann leider nicht ausgef&uuml;hrt werden. Entweder handelt es sich um ein vor&uuml;bergehendes technisches Problem oder das Tageslimit w&auml;re &uuml;berschritten. Bitte w&auml;hlen Sie eine andere Zahlungsart.]]></VariableLocalized>
                 <VariableLocalized iso="ENG"><![CDATA[The payment cannot be executed. This may be due to a technical problem or because the daily limit would be exceeded. Please select a different payment method.]]></VariableLocalized>
                 <Name>lang_limit_exeeded</Name>
             </Variable>

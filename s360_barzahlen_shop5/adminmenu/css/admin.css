@@ -21,10 +21,7 @@ thead td {
 
 #page-select {
     border:0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     height: 35px;
-    width: 35px;
     text-align: center;    
 }
 
@@ -37,8 +34,6 @@ thead td {
     border: 1px solid #ccc;
     padding: 10px 15px;
 }
-
-
 
 #s360-search {
     margin-right: 8px;

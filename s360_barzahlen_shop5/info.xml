@@ -8,7 +8,7 @@
     <XMLVersion>100</XMLVersion>
     <MinShopVersion>500</MinShopVersion>
     <PluginID>s360_barzahlen_shop5</PluginID>
-    <!-- <ExsID>not yet configured</ExsID> -->
+    <ExsID>0c87e864-3842-4fa0-9dfb-d8c21fb7021a</ExsID>
     <Install>
         <Adminmenu>
             <Customlink sort="1">

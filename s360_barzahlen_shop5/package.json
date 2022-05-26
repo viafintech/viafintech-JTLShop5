@@ -21,7 +21,7 @@
   "homepage": "https://gitlab.com/solution360/plugins/jtl/shop-5/s360_barzahlen_shop5#readme",
   "devDependencies": {
     "@types/jquery": "^3.5.0",
-    "grunt": "~1.5.2",
+    "grunt": "~1.5.3",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-contrib-concat": "~1.0.1",
     "grunt-contrib-imagemin": "~1.0.1",

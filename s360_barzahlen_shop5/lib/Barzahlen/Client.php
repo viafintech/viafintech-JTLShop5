@@ -4,11 +4,10 @@ namespace Plugin\s360_barzahlen_shop5\lib\Barzahlen;
 
 use Plugin\s360_barzahlen_shop5\lib\Barzahlen\Request\Request;
 
-
 class Client
 {
-    const API_URL = 'https://api.barzahlen.de:443/v2';
 
+    const API_URL = 'https://api.barzahlen.de:443/v2';
     const API_SANDBOX_URL = 'https://api-sandbox.barzahlen.de:443/v2';
 
     /**
@@ -30,7 +29,6 @@ class Client
      * @var string
      */
     private $userAgent = 'PHP SDK v2.1.2';
-
 
     /**
      * @param string $divisionId
@@ -74,7 +72,7 @@ class Client
     {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $this->apiUrl . $request->getPath());
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $this->buildHeader($request)); 
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $this->buildHeader($request));
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $request->getMethod()); //POST
         curl_setopt($curl, CURLOPT_POSTFIELDS, $request->getBody());
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -154,15 +152,15 @@ class Client
 
             $response = json_decode($response);
             $errorMapping = array(
-                'auth'              => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\AuthException',
-                'transport'         => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\TransportException',
-                'idempotency'       => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\IdempotencyException',
-                'rate_limit'        => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\RateLimitException',
-                'invalid_format'    => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\InvalidFormatException',
-                'invalid_state'     => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\InvalidStateException',
+                'auth' => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\AuthException',
+                'transport' => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\TransportException',
+                'idempotency' => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\IdempotencyException',
+                'rate_limit' => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\RateLimitException',
+                'invalid_format' => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\InvalidFormatException',
+                'invalid_state' => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\InvalidStateException',
                 'invalid_parameter' => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\InvalidParameterException',
-                'not_allowed'       => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\NotAllowedException',
-                'server_error'      => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\ServerException'
+                'not_allowed' => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\NotAllowedException',
+                'server_error' => 'Plugin\s360_barzahlen_shop5\lib\Barzahlen\Exception\ServerException'
             );
 
             if (isset($errorMapping[$response->error_class])) {
@@ -176,9 +174,8 @@ class Client
     /**
      * helper method, generates a unique id
      */
-    public function generateUUID() 
+    public function generateUUID()
     {
         return uniqid();
     }
-    
 }

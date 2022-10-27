@@ -2,9 +2,9 @@
 
 namespace Plugin\s360_barzahlen_shop5\lib\Barzahlen;
 
-
 class Middleware
 {
+
     /**
      * @param string $host
      * @param string $method
@@ -69,5 +69,4 @@ class Middleware
     {
         return substr($string, 0, strlen($prefix)) === $prefix;
     }
-    
 }

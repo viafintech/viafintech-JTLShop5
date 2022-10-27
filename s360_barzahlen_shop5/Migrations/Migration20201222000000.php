@@ -1,18 +1,20 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Plugin\s360_barzahlen_shop5\Migrations;
 
 use JTL\Plugin\Migration;
 use JTL\Update\IMigration;
 
+class Migration20201222000000 extends Migration implements IMigration
+{
 
-class Migration20201222000000 extends Migration implements IMigration {
-    
     const TABLE_NAME_SLIP = "xplugin_s360_barzahlen_shop5_slip";
-    
-    public function up() {
-        $this->execute("
-            CREATE TABLE IF NOT EXISTS `".self::TABLE_NAME_SLIP."` (
+
+    public function up()
+    {
+        $stmt = "CREATE TABLE IF NOT EXISTS `" . self::TABLE_NAME_SLIP . "` (
             `slip_id` int(10) NOT NULL AUTO_INCREMENT, PRIMARY KEY (`slip_id`),
             `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             `updated_at` datetime NOT NULL,
@@ -30,13 +32,14 @@ class Migration20201222000000 extends Migration implements IMigration {
             `transaction_state` varchar(11) NOT NULL COMMENT 'pending,paid,expired,invalidated',
             `transaction_amount` float(5,2) NOT NULL,
             `transaction_currency` varchar(3) NOT NULL COMMENT 'iso3')
-        ");
+        ";
+        $this->execute($stmt);
     }
-    
-    public function down() {
+
+    public function down()
+    {
         if ($this->doDeleteData()) {
-            $this->execute("DROP TABLE IF EXISTS `".self::TABLE_NAME_SLIP."`");
+            $this->execute("DROP TABLE IF EXISTS `" . self::TABLE_NAME_SLIP . "`");
         }
     }
-    
 }

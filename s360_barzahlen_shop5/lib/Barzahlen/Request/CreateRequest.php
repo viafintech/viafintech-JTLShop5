@@ -1,10 +1,12 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Plugin\s360_barzahlen_shop5\lib\Barzahlen\Request;
 
-
 class CreateRequest extends Request
 {
+
     /**
      * @var boolean
      */
@@ -69,7 +71,6 @@ class CreateRequest extends Request
      * @var array
      */
     private $metadata = array();
-
 
     /**
      * @param array|string $body
@@ -304,5 +305,4 @@ class CreateRequest extends Request
 
         return json_encode($body);
     }
-
 }

@@ -28,16 +28,20 @@
                     <div class="col-md-6 ml-auto"><label class="spaced">{__('Status')}:</label> {$slip->transaction_state}
                     </div>
                 </div>
-                {if $slip->actions}    
+                {if $slip->actions}
                 <div class="row">
                     <div class="col-md-6"></div>
-                    <div class="col-md-6 ml-auto"><label class="spaced">{__('Aktionen')}:</label><span class="actions">
-                        {if $slip->actions->refund}<a onclick="getRefundForm('{$slip->id}');" href="#" title="{__('Erstatten')}"><i class="fa fa-undo"></i></a>{/if}
-                        {if $slip->actions->resend}<a onclick="confirmResendSlip('{$slip->id}');" href="#" title="{__('Senden')}"><i class="fa fa-share-square"></i></a>{/if}
-                        {if $slip->actions->invalidate}<a onclick="confirmInvalidateSlip('{$slip->id}');" href="#" title="{__('Invalidieren')}"><i class="fa fa-times"></i></a>{/if}</span>
+                    <div class="col-md-6 ml-auto">
+                        <div class="input-group actions">
+                            <div class="btn-group input-group-btn">
+                                {if $slip->actions->refund}<button class="btn btn-default" onclick="getRefundForm('{$slip->id}');" href="#" title="{__('Erstatten')}"><i class="fa fa-undo"></i></button>{/if}
+                                {if $slip->actions->resend}<button class="btn btn-default" onclick="confirmResendSlip('{$slip->id}');" href="#" title="{__('Senden')}"><i class="fa fa-share-square"></i></button>{/if}
+                                {if $slip->actions->invalidate}<button class="btn btn-default" onclick="confirmInvalidateSlip('{$slip->id}');" href="#" title="{__('Invalidieren')}"><i class="fa fa-times"></i></button>{/if}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {/if}    
+                {/if}
             </div>
             {if $slip->refunds}
             <div class="modal-body">
@@ -56,9 +60,13 @@
                     <div class="col-md-2">{$refund->transaction_amount} {$refund->transaction_currency}</div>
                     <div class="col-md-2 text-right">{$refund->expires_at}</div>
                     <div class="col-md-2">{$refund->transaction_state}</div>
-                    <div class="col-md-2"><span class="actions">
-                    {if $refund->actions->resend}<a onclick="confirmResendSlip('{$refund->id}');" href="#" title="{__('Senden')}"><i class="fa fa-share-square"></i></a>{/if}
-                    {if $refund->actions->invalidate}<a onclick="confirmInvalidateSlip('{$refund->id}');" href="#" title="{__('Invalidieren')}"><i class="fa fa-times"></i></a>{/if}</span>
+                    <div class="col-md-2">
+                        <div class="input-group actions">
+                            <div class="btn-group input-group-btn">
+                                {if $refund->actions->resend}<button class="btn btn-default" onclick="confirmResendSlip('{$refund->id}');" href="#" title="{__('Senden')}"><i class="fa fa-share-square"></i></button>{/if}
+                                {if $refund->actions->invalidate}<button class="btn btn-default" onclick="confirmInvalidateSlip('{$refund->id}');" href="#" title="{__('Invalidieren')}"><i class="fa fa-times"></i></button>{/if}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {/foreach}

@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Plugin\s360_barzahlen_shop5;
 
@@ -6,70 +8,50 @@ use JTL\Shop;
 use JTL\Events\Dispatcher;
 use JTL\Plugin\Bootstrapper;
 
-
-class Bootstrap extends Bootstrapper {
+class Bootstrap extends Bootstrapper
+{
 
     private $cFrontendPfad;
+    private $cacheArr = [CACHING_GROUP_CORE, CACHING_GROUP_LANGUAGE, CACHING_GROUP_LICENSES, CACHING_GROUP_PLUGIN, CACHING_GROUP_BOX];
 
-    public function installed() {
+    public function installed()
+    {
         parent::installed();
-
         // Bug Workaround - JTL-Shop 5.0.0 does not clear cache when a plugin gets installed via the extension store
-        Shop::Container()->getCache()->flushTags([CACHING_GROUP_CORE, CACHING_GROUP_LANGUAGE,
-            CACHING_GROUP_LICENSES, CACHING_GROUP_PLUGIN, CACHING_GROUP_BOX]);
+        Shop::Container()->getCache()->flushTags($this->cacheArr);
     }
 
-    public function updated($oldVersion, $newVersion) {
+    public function updated($oldVersion, $newVersion)
+    {
         parent::updated($oldVersion, $newVersion);
-
         // Bug Workaround - JTL-Shop 5.0.0 does not clear cache when a plugin gets installed via the extension store
-        Shop::Container()->getCache()->flushTags([CACHING_GROUP_CORE, CACHING_GROUP_LANGUAGE,
-            CACHING_GROUP_LICENSES, CACHING_GROUP_PLUGIN, CACHING_GROUP_BOX]);
+        Shop::Container()->getCache()->flushTags($this->cacheArr);
     }
 
-    public function boot(Dispatcher $dispatcher): void {
-
-        $dispatcher->listen('shop.hook.' . \HOOK_SMARTY_OUTPUTFILTER, function (array $args) {
-            $this->hookSmartyOutputfilter();
-        });
-        
+    public function boot(Dispatcher $dispatcher): void
+    {
         parent::boot($dispatcher);
+        $dispatcher->listen(
+            'shop.hook.' . \HOOK_SMARTY_OUTPUTFILTER,
+            function (array $args) {
+                $this->hookSmartyOutputfilter();
+            }
+        );
     }
-    
-    private function hookSmartyOutputfilter() {
-        $this->cFrontendPfad = $this->getPlugin()->getPaths()->getFrontendPath();   
 
-        if (Shop::getPageType() === PAGE_BESTELLVORGANG && !empty($_SESSION["Barzahlen"]->message)) {
-            $this->pageBestellvorgang();
-        }
+    private function hookSmartyOutputfilter()
+    {
+        $this->cFrontendPfad = $this->getPlugin()->getPaths()->getFrontendPath();
+
         if (Shop::getPageType() === PAGE_BESTELLABSCHLUSS && !empty($_SESSION["Barzahlen"]->checkout_token)) {
             $this->pageBestellabschluss();
         }
     }
-    
-    private function pageBestellvorgang() {
-        $level = [
-            "success" => "success",
-            "notice" => "info",
-            "warning" => "warning",
-            "error" => "danger"
-        ];
 
-        $_SESSION["Barzahlen"]->message->level = $level[$_SESSION["Barzahlen"]->message->type];
-        Shop::Smarty()->assign("message", (array)$_SESSION["Barzahlen"]->message);
-        unset($_SESSION["Barzahlen"]->message);
-
-        $template = Shop::Smarty()->fetch($this->cFrontendPfad . 'template/messages.tpl');
-        pq("#fieldset-payment")->prepend($template);
-    }
-
-    private function pageBestellabschluss() {
+    private function pageBestellabschluss()
+    {
         Shop::Smarty()->assign("checkout_token", $_SESSION["Barzahlen"]->checkout_token);
         unset($_SESSION["Barzahlen"]->checkout_token);
-
-        if ($_SESSION["Barzahlen"]->api->sandbox) {
-            Shop::Smarty()->assign("sandbox", $_SESSION["Barzahlen"]->api->sandbox);
-        }
 
         $template = Shop::Smarty()->fetch($this->cFrontendPfad . 'template/checkout_script.tpl');
         pq("body")->append($template);
@@ -79,5 +61,4 @@ class Bootstrap extends Bootstrapper {
 
         unset($_SESSION["Barzahlen"]);
     }
-    
 }

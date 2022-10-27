@@ -1,15 +1,16 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Plugin\s360_barzahlen_shop5\lib\Barzahlen;
 
-
 class Webhook
 {
+
     /**
      * @var string
      */
     private $paymentKey;
-
 
     /**
      * @param string $paymentKey
@@ -26,10 +27,10 @@ class Webhook
      */
     public function verify($header, $body)
     {
-        if(!isset($header['REQUEST_METHOD'], $header['REQUEST_URI'], $header['QUERY_STRING'], $header['HTTP_DATE'], $header['HTTP_BZ_SIGNATURE'])) {
+        if (!isset($header['REQUEST_METHOD'], $header['REQUEST_URI'], $header['QUERY_STRING'], $header['HTTP_DATE'], $header['HTTP_BZ_SIGNATURE'])) {
             return false;
         }
-        
+
         if (isset($header['HTTP_X_FORWARDED_HOST'])) {
             $host = $header['HTTP_X_FORWARDED_HOST'] . ':' . $header['HTTP_X_FORWARDED_PORT'];
         } else {
@@ -49,5 +50,4 @@ class Webhook
 
         return Middleware::stringsEqual($header['HTTP_BZ_SIGNATURE'], 'BZ1-HMAC-SHA256 ' . $signature);
     }
-    
 }

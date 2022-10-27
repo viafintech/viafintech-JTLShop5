@@ -14,12 +14,14 @@
     <td class="text-center">{$slip->cLieferLand}</td>
     <td>{$slip->expires_at}</td>
     <td>
-        <span class="actions">
-            <a onclick="getSlipInfo('{$slip->for_slip_id}');" href="#" title="{__('Anzeigen')}"><i class="fa fa-eye"></i></a>
-            {if $slip->actions->refund}<a onclick="getRefundForm('{$slip->for_slip_id}');" href="#" title="{__('Erstatten')}"><i class="fa fa-undo"></i></a>{/if}
-            {if $slip->actions->resend}<a onclick="confirmResendSlip('{$slip->for_slip_id}');" href="#" title="{__('Senden')}"><i class="fa fa-share-square"></i></a>{/if}
-            {if $slip->actions->invalidate}<a onclick="confirmInvalidateSlip('{$slip->for_slip_id}');" href="#" title="{__('Invalidieren')}"><i class="fa fa-times"></i></a>{/if}
-        </span>
+        <div class="input-group actions">
+            <div class="btn-group input-group-btn">
+                <button class="btn btn-default" onclick="getSlipInfo('{$slip->for_slip_id}');" href="#" title="{__('Anzeigen')}"><i class="fa fa-eye"></i></button>
+                {if $slip->actions->refund}<button class="btn btn-default" onclick="getRefundForm('{$slip->for_slip_id}');" href="#" title="{__('Erstatten')}"><i class="fa fa-undo"></i></button>{/if}
+                {if $slip->actions->resend}<button class="btn btn-default" onclick="confirmResendSlip('{$slip->for_slip_id}');" href="#" title="{__('Senden')}"><i class="fa fa-share-square"></i></button>{/if}
+                {if $slip->actions->invalidate}<button class="btn btn-default" onclick="confirmInvalidateSlip('{$slip->for_slip_id}');" href="#" title="{__('Invalidieren')}"><i class="fa fa-times"></i></button>{/if}
+            </div>
+        </div>
     </td>
 </tr>
 {foreachelse}

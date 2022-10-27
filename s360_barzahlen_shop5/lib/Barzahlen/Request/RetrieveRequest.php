@@ -1,10 +1,12 @@
-<?php  declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Plugin\s360_barzahlen_shop5\lib\Barzahlen\Request;
 
-
 class RetrieveRequest extends Request
 {
+
     /**
      * @var string
      */
@@ -15,7 +17,6 @@ class RetrieveRequest extends Request
      */
     protected $method = 'GET';
 
-
     /**
      * @param string $slipId
      */
@@ -23,5 +24,4 @@ class RetrieveRequest extends Request
     {
         $this->parameters[] = $slipId;
     }
-    
 }

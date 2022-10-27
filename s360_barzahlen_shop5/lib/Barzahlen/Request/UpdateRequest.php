@@ -1,10 +1,12 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Plugin\s360_barzahlen_shop5\lib\Barzahlen\Request;
 
-
 class UpdateRequest extends Request
 {
+
     /**
      * @var string
      */
@@ -39,7 +41,6 @@ class UpdateRequest extends Request
      * @var array
      */
     private $transactions = array();
-
 
     /**
      * @param string $slipId
@@ -189,5 +190,4 @@ class UpdateRequest extends Request
 
         return json_encode($body);
     }
-
 }

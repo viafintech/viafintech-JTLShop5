@@ -1,1 +1,0 @@
-{if $checkout_token}<script src="https://cdn.barzahlen.de/js/v2/checkout{if $sandbox}-sandbox{/if}.js" class="bz-checkout" data-token="{$checkout_token}" {if $silent}data-auto-display="false"{/if}></script>{/if}

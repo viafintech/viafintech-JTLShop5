@@ -133,18 +133,18 @@ class Database
         //jtl-shop order data
         $obj->kBestellung = (int) $order->kBestellung;
         $obj->cBestellNr = $order->cBestellNr;
-        if (Helper::isset_noempty($order->cRechnungsLand)) { //$order is payment slip
+        if (!empty($order->cRechnungsLand)) { //$order is payment slip
             $obj->cRechnungsLand = $order->cRechnungsLand;
-        } elseif (Helper::isset_noempty($order->oRechnungsadresse->cLand)) { //$order is finalized
+        } elseif (!empty($order->oRechnungsadresse->cLand)) { //$order is finalized
             $obj->cRechnungsLand = $order->oRechnungsadresse->cLand;
         }
-        if (Helper::isset_noempty($order->cLieferLand)) { //$order is payment slip
+        if (!empty($order->cLieferLand)) { //$order is payment slip
             $obj->cLieferLand = $order->cLieferLand;
-        } elseif (Helper::isset_noempty($order->Lieferadresse->cLand)) { //$order is finalized
+        } elseif (!empty($order->Lieferadresse->cLand)) { //$order is finalized
             $obj->cLieferLand = $order->Lieferadresse->cLand;
         }
         //viacash slip data
-        if (Helper::isset_noempty($slip->refund->for_slip_id)) {
+        if (!empty($slip->refund->for_slip_id)) {
             $obj->for_slip_id = $slip->refund->for_slip_id; //set payment slip id
         } else {
             $obj->for_slip_id = $slip->id; //set self slip id

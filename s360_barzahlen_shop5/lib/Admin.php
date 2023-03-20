@@ -18,7 +18,7 @@ class Admin
     private $database;
     private $plugin;
     private $request;
-    private $APIClient;
+    private $apiClient;
 
     public function __construct()
     {

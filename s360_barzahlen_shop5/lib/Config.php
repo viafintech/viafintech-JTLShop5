@@ -84,7 +84,7 @@ class Config
 
     public function isConfiguredFor($country)
     {
-        return Helper::isset_noempty($this->api_config[$country]);
+        return !empty($this->api_config[$country]);
     }
 
     public function getApiConfig()

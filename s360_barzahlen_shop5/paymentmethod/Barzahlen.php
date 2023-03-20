@@ -1,6 +1,8 @@
 <?php
 
+use JTL\Checkout\OrderHandler;
 use JTL\Helpers\Text;
+use JTL\Session\Frontend;
 use JTL\Shop;
 use JTL\Alert\Alert;
 use Plugin\s360_barzahlen_shop5\lib\Config;
@@ -24,7 +26,7 @@ class Barzahlen extends Method
         $this->caption = 'Barzahlen';
         $this->config = Config::getInstance();
 
-        $this->cLand = (Helper::isset_noempty($_SESSION["Kunde"]->cLand)) ? $_SESSION["Kunde"]->cLand : null;
+        $this->cLand = !empty($_SESSION["Kunde"]->cLand) ? $_SESSION["Kunde"]->cLand : null;
 
         (is_object($_SESSION["Waehrung"])) ? $this->cWaehrungName = $_SESSION["Waehrung"]->getCode() : $this->cWaehrungName = null;
 
@@ -46,7 +48,7 @@ class Barzahlen extends Method
 
         $request = $this->apiClient->CreateRequest();
         $request->setSlipType(Config::SLIP_TYPE_PAYMENT);
-        if (Helper::isset_noempty($this->config->expireIn)) {
+        if (!empty($this->config->expireIn)) {
             $expiresAt = new DateTime(date('Y-m-d', time()));
             $expiresAt->modify("+" . $this->config->expireIn . " day");
             $request->setExpiresAt($expiresAt);
@@ -62,7 +64,7 @@ class Barzahlen extends Method
             $request->setCustomerLanguage($targetLocale);
         }
 
-        if (Helper::isset_noempty($this->config->sendCustomerAddress)) {
+        if (!empty($this->config->sendCustomerAddress)) {
             if ($order->oRechnungsadresse->cStrasse && $order->oRechnungsadresse->cHausnummer) {
                 $address["street_and_no"] = html_entity_decode($order->oRechnungsadresse->cStrasse . " " . $order->oRechnungsadresse->cHausnummer, ENT_COMPAT, 'UTF-8');
             }
@@ -78,7 +80,13 @@ class Barzahlen extends Method
             $response = $this->apiClient->handle($request);
             $slip = json_decode($response);
 
-            $orderFinalized = finalisiereBestellung();
+            if(Helper::isShopAtLeast52()) {
+                $orderHandler = new OrderHandler(Shop::Container()->getDB(), Frontend::getCustomer(), Frontend::getCart());
+                $orderFinalized = $orderHandler->finalizeOrder();
+            } else {
+                /** @noinspection PhpDeprecationInspection */
+                $orderFinalized = finalisiereBestellung();
+            }
             if (!isset($orderFinalized->Lieferadresse)) {
                 $orderFinalized->Lieferadresse = (object) [];
             }
@@ -91,7 +99,7 @@ class Barzahlen extends Method
 
             // pretend we were redirected to notify (this leads to the confirmation page being shown)
             $tBestellId = Shop::Container()->getDB()->select('tbestellid', 'kBestellung', (int) $orderFinalized->kBestellung);
-            if (Helper::isset_noempty($tBestellId)) {
+            if (!empty($tBestellId)) {
                 header('Location: ' . Shop::getURL() . '/bestellabschluss.php?i=' . $tBestellId->cId);
                 exit();
             }
@@ -112,9 +120,18 @@ class Barzahlen extends Method
     public function isValidIntern($args_arr = []): bool
     {
         //post order is not supported, disable payment method
-        if (!$this->config->paymethod->duringOrder) {
-            Logger::debug("Postorder payment is not supported, please enable preorder in payment method.");
-            return false;
+        /** @var \JTL\Plugin\Data\PaymentMethod $paymentMethod */
+        $paymentMethod = $this->config->paymethod;
+        if(Helper::isShopAtLeast52()) {
+            if (!$paymentMethod->getDuringOrder()) {
+                Logger::debug("Postorder payment is not supported, please enable preorder in payment method.");
+                return false;
+            }
+        } else {
+            if (!$paymentMethod->duringOrder) {
+                Logger::debug("Postorder payment is not supported, please enable preorder in payment method.");
+                return false;
+            }
         }
         if ($this->inConfiguredCountries()) {
             return true;
@@ -124,7 +141,7 @@ class Barzahlen extends Method
 
     public function isValid($customer, $cart): bool
     {
-        if (Helper::isset_noempty($_SESSION["Barzahlen"]->has_error) && $_SESSION["Barzahlen"]->has_error === true) {
+        if (!empty($_SESSION["Barzahlen"]->has_error) && $_SESSION["Barzahlen"]->has_error === true) {
             return false;
         }
         return parent::isValid($customer, $cart);
@@ -159,7 +176,7 @@ class Barzahlen extends Method
 
     public function hasAllowedLimit()
     {
-        if (Helper::isset_noempty($_SESSION['Warenkorb'])) {
+        if (!empty($_SESSION['Warenkorb'])) {
             $OffeneSumme = $this->getDailyAmount();
             $WarenSumme = $_SESSION['Warenkorb']->gibGesamtsummeWaren(1); //inkl. Versandkosten und Gutscheine
             $fAufpreis = $this->getAdditionalPaymentCost();
@@ -174,10 +191,17 @@ class Barzahlen extends Method
     private function getAdditionalPaymentCost()
     {
         $fAufpreis = 0.00;
-        if (Helper::isset_noempty($_SESSION['AktiveVersandart'])) {
-            $tVersandartZahlungsart = Shop::Container()->getDB()->select('tversandartzahlungsart', 'kVersandart', (int) $_SESSION['AktiveVersandart'], 'kZahlungsart', $this->config->tZahlungsart->kZahlungsart);
-            if (Helper::isset_noempty($tVersandartZahlungsart)) {
-                $fAufpreis = $tVersandartZahlungsart->fAufpreis;
+        if (!empty($_SESSION['AktiveVersandart'])) {
+            /** @var \JTL\Plugin\Data\PaymentMethod $paymentMethod */
+            $paymentMethod = $this->config->paymethod;
+            if(Helper::isShopAtLeast52()) {
+                $paymentMethodId = $paymentMethod->getMethodID();
+            } else {
+                $paymentMethodId = $paymentMethod->methodID;
+            }
+            $tVersandartZahlungsart = Shop::Container()->getDB()->select('tversandartzahlungsart', 'kVersandart', (int) $_SESSION['AktiveVersandart'], 'kZahlungsart', $paymentMethodId);
+            if (!empty($tVersandartZahlungsart)) {
+                $fAufpreis = (float) $tVersandartZahlungsart->fAufpreis;
             }
         }
         return $fAufpreis;
@@ -186,7 +210,7 @@ class Barzahlen extends Method
     private function getDailyAmount()
     {
         $amount = 0.00;
-        if (Helper::isset_noempty($_SESSION["Kunde"]->cMail)) {
+        if (!empty($_SESSION["Kunde"]->cMail)) {
             $amount = Database::getInstance()->getDailySlipsAmount($_SESSION["Kunde"]->cMail);
         }
         return $amount->sum;
@@ -197,7 +221,7 @@ class Barzahlen extends Method
 
         $payment_slip = Database::getInstance()->selectSlipBykBestellung($kBestellung);
 
-        if (!Helper::isset_noempty($payment_slip)) {
+        if (empty($payment_slip)) {
             Logger::debug("Slip not found for kBestellung " . $kBestellung . "!");
             return parent::cancelOrder($kBestellung, $bDelete);
         }

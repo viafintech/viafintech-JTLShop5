@@ -7,11 +7,6 @@ namespace Plugin\s360_barzahlen_shop5\lib;
 class Helper
 {
 
-    public static function isset_noempty($var)
-    {
-        return (isset($var) && !empty($var));
-    }
-
     public static function now()
     {
         return date('Y-m-d H:i:s', time());
@@ -28,5 +23,14 @@ class Helper
             return true;
         }
         return false;
+    }
+
+    /**
+     * Checks shop version
+     * @return int|bool
+     */
+    public static function isShopAtLeast52()
+    {
+        return version_compare(\APPLICATION_VERSION, '5.2.0-beta', '>=');
     }
 }

@@ -25,7 +25,7 @@ class APIClient
         }
 
         $conf = Config::getInstance();
-        $userAgent = "s360 " . $conf->plugin->getMeta()->getName() . " Plugin v" . $conf->plugin->getMeta()->getVersion() . " jtl" . substr(Shop::getApplicationVersion(), 0, 1);
+        $userAgent = "s360 " . $conf->plugin->getMeta()->getName() . " Plugin v" . $conf->plugin->getMeta()->getVersion() . " jtl" . substr(\APPLICATION_VERSION, 0, 1);
 
         $config = $conf->getApiConfig()[$cLand];
         Shop::Smarty()->assign("sandbox", (bool) $config->sandbox);

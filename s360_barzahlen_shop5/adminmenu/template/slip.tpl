@@ -34,16 +34,16 @@
                     <div class="col-md-6 ml-auto">
                         <div class="input-group actions">
                             <div class="btn-group input-group-btn">
-                                {if $slip->actions->refund}<button class="btn btn-default" onclick="getRefundForm('{$slip->id}');" href="#" title="{__('Erstatten')}"><i class="fa fa-undo"></i></button>{/if}
-                                {if $slip->actions->resend}<button class="btn btn-default" onclick="confirmResendSlip('{$slip->id}');" href="#" title="{__('Senden')}"><i class="fa fa-share-square"></i></button>{/if}
-                                {if $slip->actions->invalidate}<button class="btn btn-default" onclick="confirmInvalidateSlip('{$slip->id}');" href="#" title="{__('Invalidieren')}"><i class="fa fa-times"></i></button>{/if}
+                                {if isset($slip->actions->refund) && $slip->actions->refund}<button class="btn btn-default" onclick="getRefundForm('{$slip->id}');" href="#" title="{__('Erstatten')}"><i class="fa fa-undo"></i></button>{/if}
+                                {if isset($slip->actions->resend) && $slip->actions->resend}<button class="btn btn-default" onclick="confirmResendSlip('{$slip->id}');" href="#" title="{__('Senden')}"><i class="fa fa-share-square"></i></button>{/if}
+                                {if isset($slip->actions->invalidate) && $slip->actions->invalidate}<button class="btn btn-default" onclick="confirmInvalidateSlip('{$slip->id}');" href="#" title="{__('Invalidieren')}"><i class="fa fa-times"></i></button>{/if}
                             </div>
                         </div>
                     </div>
                 </div>
                 {/if}
             </div>
-            {if $slip->refunds}
+            {if isset($slip->refunds) && $slip->refunds}
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-2"></div>
@@ -63,8 +63,8 @@
                     <div class="col-md-2">
                         <div class="input-group actions">
                             <div class="btn-group input-group-btn">
-                                {if $refund->actions->resend}<button class="btn btn-default" onclick="confirmResendSlip('{$refund->id}');" href="#" title="{__('Senden')}"><i class="fa fa-share-square"></i></button>{/if}
-                                {if $refund->actions->invalidate}<button class="btn btn-default" onclick="confirmInvalidateSlip('{$refund->id}');" href="#" title="{__('Invalidieren')}"><i class="fa fa-times"></i></button>{/if}
+                                {if isset($refund->actions->resend) && $refund->actions->resend}<button class="btn btn-default" onclick="confirmResendSlip('{$refund->id}');" href="#" title="{__('Senden')}"><i class="fa fa-share-square"></i></button>{/if}
+                                {if isset($refund->actions->invalidate) && $refund->actions->invalidate}<button class="btn btn-default" onclick="confirmInvalidateSlip('{$refund->id}');" href="#" title="{__('Invalidieren')}"><i class="fa fa-times"></i></button>{/if}
                             </div>
                         </div>
                     </div>

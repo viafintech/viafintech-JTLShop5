@@ -14,7 +14,7 @@
             <p class="alert alert-success">{__('paymethodConfigured')}</p>
             <p>{__('checkPaymethodSettings')}</p>
             <table class="table table-condensed">
-                <thead><td>{__('Land')}</td><td>{__('Modus')}</td><td>{__('Division-ID')}</td><td>{__('APIKey')}</td></thead>
+                <thead><tr><td>{__('Land')}</td><td>{__('Modus')}</td><td>{__('Division-ID')}</td><td>{__('APIKey')}</td></tr></thead>
                 {foreach $apiConfig as $country => $config}
                     <tr><td>{$country}</td><td>{if $config->sandbox}Sandbox{else}Live{/if}</td><td>{$config->divisionId}</td><td>{$config->APIKey}</td></tr>
                 {/foreach}
@@ -22,14 +22,14 @@
         {else}
             <p class="alert alert-warning">{__('paymethodNotConfigured')}</p>
             <ul>
-                <li>{__('infoRegstration')}<a href="https://controlcenter.barzahlen.de">Barzahlen Control Center</a>.</li>
+                <li>{__('infoRegstration')} <a href="https://controlcenter.barzahlen.de">Barzahlen Control Center</a>.</li>
                 <li>{__('infoAccountConfirmation')}</li>
                 <li>{__('infoDivisionSetup')}</li>
                 <li>{__('infoCredentials')}</li>
                 <li>{__('infoSetupCredentials')}</li>
             </ul>   
         {/if}
-        <div><a href="zahlungsarten.php" class="btn btn-primary">{__('Zu den Zahlarten')}</a></div>
+        <div><a href="{$paymentMethodsUrl}" class="btn btn-primary">{__('Zu den Zahlarten')}</a></div>
         </div>
         <div class="col-4"></div>
     </div>
@@ -37,11 +37,11 @@
     <div class="row">    
         <div class="col-8">
         <h2>{__('Versandart')} {__('Einstellungen')}</h2>
-        {if $tVersandarten}
+        {if isset($tVersandarten)}
             <p class="alert alert-success">{__('shippingMethodActivated')}</p>
             <p>{__('checkShippingmethodSettings')}</p>
             <table class="table table-condensed">
-                <thead><td>{__('Versandart')}</td><td>{__('Länder')}</td></thead>
+                <thead><tr><td>{__('Versandart')}</td><td>{__('Länder')}</td></tr></thead>
             {foreach $tVersandarten as $Versandart}
                 <tr><td>{$Versandart->cName}</td><td>{$Versandart->cLaender}</td></tr>
             {/foreach}
@@ -49,7 +49,7 @@
         {else}
             <p class="alert alert-warning">{__('shippingmethodNotConfigured')}</p>  
         {/if}
-        <div><a href="versandarten.php" class="btn btn-primary">{__('Zu den Versandarten')}</a></div>
+        <div><a href="{$shippingMethodsUrl}" class="btn btn-primary">{__('Zu den Versandarten')}</a></div>
         </div>
         <div class="col-4"></div>
     </div>

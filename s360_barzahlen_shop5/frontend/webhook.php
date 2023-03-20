@@ -9,15 +9,19 @@ use Plugin\s360_barzahlen_shop5\lib\Database;
 use Plugin\s360_barzahlen_shop5\lib\Logger;
 use Plugin\s360_barzahlen_shop5\lib\Barzahlen\Webhook;
 
+/**
+ * https://stackoverflow.com/questions/25232975/php-filter-inputinput-server-request-method-returns-null
+ * https://stackoverflow.com/questions/19767894/warning-do-not-access-superglobal-post-array-directly-on-netbeans-7-4-for-ph
+ */
 $header['REQUEST_METHOD'] = "POST";
-$header['REQUEST_URI'] = filter_input(INPUT_SERVER, 'REQUEST_URI');
+$header['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
 $header['QUERY_STRING'] = "";
-$header['HTTP_DATE'] = filter_input(INPUT_SERVER, 'HTTP_DATE');
-$header['HTTP_BZ_SIGNATURE'] = filter_input(INPUT_SERVER, 'HTTP_BZ_SIGNATURE');
-$header['HTTP_X_FORWARDED_HOST'] = filter_input(INPUT_SERVER, 'HTTP_X_FORWARDED_HOST');
-$header['HTTP_X_FORWARDED_PORT'] = filter_input(INPUT_SERVER, 'HTTP_X_FORWARDED_PORT');
-$header['HTTP_HOST'] = filter_input(INPUT_SERVER, 'HTTP_HOST');
-$header['SERVER_PORT'] = filter_input(INPUT_SERVER, 'SERVER_PORT');
+$header['HTTP_DATE'] = $_SERVER['HTTP_DATE'];
+$header['HTTP_BZ_SIGNATURE'] = $_SERVER['HTTP_BZ_SIGNATURE'];
+$header['HTTP_X_FORWARDED_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+$header['HTTP_X_FORWARDED_PORT'] = $_SERVER['HTTP_X_FORWARDED_PORT'];
+$header['HTTP_HOST'] = $_SERVER['HTTP_HOST'];
+$header['SERVER_PORT'] = $_SERVER['SERVER_PORT'];
 
 $body = file_get_contents("php://input");
 
@@ -45,11 +49,7 @@ if (!$verified) {
 
 // catch response
 if ($header['REQUEST_METHOD'] === "POST" && !empty($body)) {
-    Logger::api_message(
-        (new \ReflectionClass($webhook))->getShortName(),
-        "",
-        $body
-    );
+    Logger::api_message("Barzahlen", "", $body);
 }
 
 // response is verified
@@ -62,6 +62,8 @@ if (!empty($payment_slip)) {
     $database->updateSlip($obj);
 } else {
     Logger::debug("Transaction ID '" . $response->affected_transaction_id . "' not found. (" . $response->slip->id . ")");
+    http_response_code(404);
+    exit();
 }
 
 // handle payment event
